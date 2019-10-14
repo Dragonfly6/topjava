@@ -19,7 +19,11 @@ import static java.util.stream.Collectors.toList;
 public class MealsUtil {
     private static final int DEFAULT_CALORIES_PER_DAY = 2000;
 
+
+
+
     public static void main(String[] args) throws ExecutionException, InterruptedException {
+
         List<Meal> meals = Arrays.asList(
                 new Meal(LocalDateTime.of(2015, Month.MAY, 30, 10, 0), "Завтрак", 500),
                 new Meal(LocalDateTime.of(2015, Month.MAY, 30, 13, 0), "Обед", 1000),
@@ -52,6 +56,17 @@ public class MealsUtil {
         return meals.stream()
                 .filter(meal -> TimeUtil.isBetween(meal.getTime(), startTime, endTime))
                 .map(meal -> createTo(meal, caloriesSumByDate.get(meal.getDate()) > caloriesPerDay))
+                .collect(Collectors.toList());
+    }
+
+    public static List<MealTo> getMealTo() {
+        Map<LocalDate, Integer> caloriesSumByDate = Example.meals.stream()
+                .collect(
+                        Collectors.groupingBy(Meal::getDate, Collectors.summingInt(Meal::getCalories))
+//                      Collectors.toMap(Meal::getDate, Meal::getCalories, Integer::sum)
+                );
+        return Example.meals.stream()
+                .map(meal -> createTo(meal, caloriesSumByDate.get(meal.getDate()) > DEFAULT_CALORIES_PER_DAY))
                 .collect(Collectors.toList());
     }
 
