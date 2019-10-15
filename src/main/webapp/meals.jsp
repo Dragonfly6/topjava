@@ -30,5 +30,17 @@
     </c:forEach>
 </table>
 
+
+<form action="meals" method="POST">
+    Add new meal:
+    <br>
+    <input type="text" name="description" id="description">
+    <br>
+    <input type="text" name="calories" id="calories">
+    <br>
+    <input type="submit" value="Submit">
+</form>
+
+
 </body>
 </html>

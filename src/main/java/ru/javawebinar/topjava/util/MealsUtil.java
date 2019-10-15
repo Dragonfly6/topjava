@@ -60,12 +60,12 @@ public class MealsUtil {
     }
 
     public static List<MealTo> getMealTo() {
-        Map<LocalDate, Integer> caloriesSumByDate = Example.meals.stream()
+        Map<LocalDate, Integer> caloriesSumByDate = Database.meals.stream()
                 .collect(
                         Collectors.groupingBy(Meal::getDate, Collectors.summingInt(Meal::getCalories))
 //                      Collectors.toMap(Meal::getDate, Meal::getCalories, Integer::sum)
                 );
-        return Example.meals.stream()
+        return Database.meals.stream()
                 .map(meal -> createTo(meal, caloriesSumByDate.get(meal.getDate()) > DEFAULT_CALORIES_PER_DAY))
                 .collect(Collectors.toList());
     }
